@@ -31,7 +31,7 @@ class PhpMimeClient
         return 0;
     }
 
-    function addCc($name, $email){
+    function addCc($email, $name = ""){
         $i = count($this->ccList)+1;
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
             $this->ccList[$i]['name'] = $name;
@@ -41,7 +41,7 @@ class PhpMimeClient
         return 0;
     }
 
-    function addBcc($name, $email){
+    function addBcc($email, $name = ""){
         $i = count($this->bccList)+1;
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
             $this->bccList[$i]['name'] = $name;
@@ -51,7 +51,7 @@ class PhpMimeClient
         return 0;
     }
 
-    function addTo($name, $email){
+    function addTo($email, $name = ""){
         $i = count($this->toList)+1;
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
             $this->toList[$i]['name'] = $name;
@@ -81,6 +81,7 @@ class PhpMimeClient
         foreach ($this->ccList as $em) {
             $cc .= ltrim($em['name']." <".$em['email'].'>, ');            
         }
+
         // Bcc:
         $bcc = "";
         foreach ($this->bccList as $em) {
@@ -157,15 +158,15 @@ class PhpMimeClient
 $m = new PhpMimeClient();
 
 // Add to
-$m->addTo("Max","email@star.ccc");
-$m->addTo("Adela","adela@music.com");
+$m->addTo("email@star.ccc", "Albercik");
+$m->addTo("adela@music.com", "Adela");
 
 // Add Cc
-$m->addCc("Katex","zonk@email.au");
-$m->addCc("Ben","hello@email.be");
+$m->addCc("hello@email.be", "Ben");
+$m->addCc("zonk@email.au");
 
 // Add Bcc
-$m->addBcc("BOSS","boos@domain.com");    
+$m->addBcc("boos@domain.com", "BOSS");    
 
 // Add files inline
 $m->addFile('photo.jpg',"zenek123");
