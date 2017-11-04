@@ -2,11 +2,12 @@
 Php mime message parser
 
 ### How to
-// Load .eml mime message from file <br>
+```
+// Load .eml mime message from file
 $str = file_get_contents('mime-mixed-related-alternative.eml');
 
-// Format output <br>
-echo "\<pre\>";
+// Format output
+echo "<pre>";
 
 // Create object MimeParser
 $m = new PhpMimeParser($str);
@@ -25,3 +26,5 @@ print_r($m->mInlineList);
 
 // Show Files
 print_r($m->mFiles);
+
+```
