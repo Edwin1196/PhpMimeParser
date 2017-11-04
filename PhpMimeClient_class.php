@@ -32,7 +32,7 @@ class PhpMimeClient
     }
 
     function addCc($name, $email){
-        $i = count($this->toList)+1;
+        $i = count($this->ccList)+1;
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
             $this->ccList[$i]['name'] = $name;
             $this->ccList[$i]['email'] = $email;
@@ -42,7 +42,7 @@ class PhpMimeClient
     }
 
     function addBcc($name, $email){
-        $i = count($this->toList)+1;
+        $i = count($this->bccList)+1;
         if(filter_var($email, FILTER_VALIDATE_EMAIL)){
             $this->bccList[$i]['name'] = $name;
             $this->bccList[$i]['email'] = $email;
@@ -154,32 +154,32 @@ class PhpMimeClient
 }
 
 
-    $m = new PhpMimeClient();
+$m = new PhpMimeClient();
 
-    // Add to
-    $m->addTo("Max","email@star.ccc");
-    $m->addTo("Adela","adela@music.com");
+// Add to
+$m->addTo("Max","email@star.ccc");
+$m->addTo("Adela","adela@music.com");
 
-    // Add Cc
-    $m->addCc("Katex","zonk@email.au");
-    $m->addBcc("Ben","hello@email.be");
+// Add Cc
+$m->addCc("Katex","zonk@email.au");
+$m->addCc("Ben","hello@email.be");
 
-    // Add Bcc
-    $m->addCc("BOSS","boos@domain.com");    
+// Add Bcc
+$m->addBcc("BOSS","boos@domain.com");    
 
-    // Add files inline
-    $m->addFile('photo.jpg',"zenek123");
+// Add files inline
+$m->addFile('photo.jpg',"zenek123");
 
-    // Add file
-    $m->addFile('sun.png');
+// Add file
+$m->addFile('sun.png');
 
-    // create mime
-    $m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","Heniek Wielki", "heniek@domain.com");
+// create mime
+$m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","Heniek Wielki", "heniek@domain.com");
 
-    // get mime
-    // $m->getMime();
-    
-    // Show mime
-    echo nl2br(htmlentities($m->getMime()));
+// get mime
+// $m->getMime();
+
+// Show mime
+echo nl2br(htmlentities($m->getMime()));
 
 ?>
