@@ -34,7 +34,7 @@ foreach ($m->mFiles as $key => $file) {
 	  mkdir($dir);
 	}	
 	//  Save content to file
-	file_put_contents($dir.'/'.$file['name'], $file['content']);
+	file_put_contents($dir.'/'.basename($file['name']), $file['content']);
 }
 
 ```
