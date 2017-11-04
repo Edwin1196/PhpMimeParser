@@ -55,15 +55,15 @@ Create mime message in php
 $m = new PhpMimeClient();
 
 // Add to
-$m->addTo("Max","email@star.ccc");
-$m->addTo("Adela","adela@music.com");
+$m->addTo("email@star.ccc", "Albercik");
+$m->addTo("adela@music.com", "Adela");
 
 // Add Cc
-$m->addCc("Katex","zonk@email.au");
-$m->addCc("Ben","hello@email.be");
+$m->addCc("hello@email.be", "Ben");
+$m->addCc("zonk@email.au");
 
 // Add Bcc
-$m->addBcc("BOSS","boos@dance.world");    
+$m->addBcc("boos@domain.com", "BOSS");    
 
 // Add files inline
 $m->addFile('photo.jpg',"zenek123");
@@ -72,7 +72,7 @@ $m->addFile('photo.jpg',"zenek123");
 $m->addFile('sun.png');
 
 // create mime
-$m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","From Heniek", "from-email@domain.com");
+$m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","Heniek Wielki", "heniek@domain.com");
 
 // get mime
 // $m->getMime();
@@ -81,3 +81,4 @@ $m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo 
 echo nl2br(htmlentities($m->getMime()));
 
 ```
+
