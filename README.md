@@ -51,8 +51,19 @@ Create mime message in php
 
 ```php
 
-// Create mime object
+// Create object
 $m = new PhpMimeClient();
+
+// Add to
+$m->addTo("Max","email@star.ccc");
+$m->addTo("Adela","adela@music.com");
+
+// Add Cc
+$m->addCc("Katex","zonk@email.au");
+$m->addBcc("Ben","hello@email.be");
+
+// Add Bcc
+$m->addCc("BOSS","boos@domain.com");    
 
 // Add files inline
 $m->addFile('photo.jpg',"zenek123");
@@ -60,8 +71,11 @@ $m->addFile('photo.jpg',"zenek123");
 // Add file
 $m->addFile('sun.png');
 
-// create mime message
-$m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","Heniek Wielki", "heniek@breakermind.com","hello@gomail.coc");
+// create mime
+$m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","From Heniek", "from-email@domain.com");
+
+// get mime
+// $m->getMime();
 
 // Show mime
 echo nl2br(htmlentities($m->getMime()));
