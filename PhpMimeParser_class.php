@@ -160,9 +160,9 @@ class PhpMimeParser{
 
 	function isFile(){
 		if (strpos($this->mime[0],'Content-Disposition:') > 0) {				
-		  		return trim($this->mime[1]);			
-			return 0;
+		  	return trim($this->mime[1]);			
 		}
+		return 0;
 	}
 
 	function isFileQuoted(){
