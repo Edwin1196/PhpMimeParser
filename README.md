@@ -63,7 +63,7 @@ $m->addCc("Katex","zonk@email.au");
 $m->addCc("Ben","hello@email.be");
 
 // Add Bcc
-$m->addCc("BOSS","boos@domain.com");    
+$m->addBcc("BOSS","boos@dance.world");    
 
 // Add files inline
 $m->addFile('photo.jpg',"zenek123");
