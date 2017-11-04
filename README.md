@@ -60,7 +60,7 @@ $m->addTo("Adela","adela@music.com");
 
 // Add Cc
 $m->addCc("Katex","zonk@email.au");
-$m->addBcc("Ben","hello@email.be");
+$m->addCc("Ben","hello@email.be");
 
 // Add Bcc
 $m->addCc("BOSS","boos@domain.com");    
