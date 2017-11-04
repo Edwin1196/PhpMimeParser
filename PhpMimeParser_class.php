@@ -330,6 +330,11 @@ class PhpMimeParser{
 		return $this->MultiParts;
 	}
 	
+	// get line from Header (To for To: , Bcc for Bcc: ...)
+	function getFromHeader($str){
+		preg_match_all('/'.$str.':(.*)/', $this->allMessage, $out);
+		return htmlentities($out[0][0]);
+	}	
 }
 
 $str = file_get_contents('mime-mixed-related-alternative.eml');
@@ -354,4 +359,19 @@ print_r($m->mInlineList);
 
 // Files
 print_r($m->mFiles);
+
+// Save file to folder
+foreach ($m->mFiles as $key => $file) {	
+	$dir = 'attachments';
+	if (!file_exists($dir)) {
+		mkdir($dir);
+	}	
+	//  Save content to file
+	file_put_contents($dir.'/'.basename($file['name']), $file['content']);
+}
+
+// Custom header
+echo $m->getFromHeader('Content-Type');
+
+
 
