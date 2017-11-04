@@ -2,7 +2,7 @@
 Php mime message parser
 
 ### How to
-```
+```php
 // Load .eml mime message from file
 $str = file_get_contents('mime-mixed-related-alternative.eml');
 
