@@ -25,6 +25,9 @@ class PhpMimeParser{
 	public $mInlineList;
 
 	function __construct($mimeMessage){	
+		error_reporting(E_ERROR | E_PARSE | E_STRICT);
+		// remove mime message end dot
+		$mimeMessage = str_replace("\r\n.\r\n","",$mimeMessage);
 		$this->allMessage = $mimeMessage;
 		$this->mTo = $this->getEmails('To');
 		$this->mFrom = $this->getEmails('From');
@@ -34,6 +37,8 @@ class PhpMimeParser{
 		$this->cutSubject($mimeMessage);
 		// sut all parts alternative related mixed		
 		$this->getParts($mimeMessage);
+		// get simple body
+		$this->getSimpleBody();
 		$p = 1;
 		foreach ($this->MultiParts as $part) {
 			if(!mb_check_encoding($part[1], 'UTF-8')){
@@ -83,6 +88,7 @@ class PhpMimeParser{
 			}
 			$p++;
 		}
+		error_reporting(E_ALL);
 	}
 
 	function cutEMails($str){
@@ -266,6 +272,13 @@ class PhpMimeParser{
 		return "";		
 	}
 
+	function getSimpleBody(){
+		if (count($this->MultiParts) == 0) {
+			$this->mHtml = explode("\r\n\r\n", $this->allMessage)[1];
+			$this->mText = $this->mHtml;
+		}
+	}
+
 	function getParts($message){
 		preg_match_all('/((?<=(Content-Type: multipart\/mixed; boundary="))(.*)?(?=(")))|((?<=(Content-Type: multipart\/related; boundary="))(.*)?(?=(")))|((?<=(Content-Type: multipart\/alternative; boundary="))(.*)?(?=(")))/', $message, $boundary);
 
@@ -320,8 +333,12 @@ class PhpMimeParser{
 }
 
 $str = file_get_contents('mime-mixed-related-alternative.eml');
+
 // MimeParser
 $m = new PhpMimeParser($str);
+
+// Format output
+echo "<pre>";
 
 // Emails
 print_r($m->mTo);
@@ -335,7 +352,6 @@ echo $m->mHtml;
 echo $m->mText;
 print_r($m->mInlineList);
 
-// files
-echo "<pre>";
+// Files
 print_r($m->mFiles);
 
