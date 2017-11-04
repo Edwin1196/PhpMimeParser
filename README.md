@@ -43,3 +43,27 @@ echo $m->getFromHeader('Content-Type');
 echo $m->getFromHeader('Bcc');
 
 ```
+
+# PhpMimeClient
+Create mime message in php
+
+# How to
+
+```php
+
+// Create mime object
+$m = new PhpMimeClient();
+
+// Add files inline
+$m->addFile('photo.jpg',"zenek123");
+
+// Add file
+$m->addFile('sun.png');
+
+// create mime message
+$m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","Heniek Wielki", "heniek@breakermind.com","hello@gomail.coc");
+
+// Show mime
+echo nl2br(htmlentities($m->getMime()));
+
+```
