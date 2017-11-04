@@ -1,5 +1,5 @@
 <?php
-// Create mime message in php
+
 /**
 * PhpMimeClient create multipart mime message https://pl.wikipedia.org/wiki/Multipurpose_Internet_Mail_Extensions
 * @autor
@@ -9,6 +9,11 @@ class PhpMimeClient
 {
     public $mime;
     public $filesList;
+    // To: Cc: and Bcc:
+    public $toList;
+    public $ccList;    
+    public $bccList;
+
     // charset: utf-8, utf-16, iso-8859-2, iso-8859-1
     public $mEncoding = 'UTF-8';
 
@@ -18,12 +23,46 @@ class PhpMimeClient
 
     function addFile($filePath, $ContentID = ""){
         $i = count($this->filesList)+1;
-        $this->filesList[$i]['path'] = $filePath;
-        $this->filesList[$i]['cid'] = $ContentID;
+        if(file_exists($filePath)){
+            $this->filesList[$i]['path'] = $filePath;
+            $this->filesList[$i]['cid'] = $ContentID;
+            return 1;
+        }
+        return 0;
     }
 
-    function createMime($msgText, $msgHtml, $subject, $fromName, $fromEmail, $to, $replyTo = "", $cc = "" , $bcc = ""){     
-        
+    function addCc($name, $email){
+        $i = count($this->toList)+1;
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $this->ccList[$i]['name'] = $name;
+            $this->ccList[$i]['email'] = $email;
+            return 1;
+        }
+        return 0;
+    }
+
+    function addBcc($name, $email){
+        $i = count($this->toList)+1;
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $this->bccList[$i]['name'] = $name;
+            $this->bccList[$i]['email'] = $email;
+            return 1;
+        }
+        return 0;
+    }
+
+    function addTo($name, $email){
+        $i = count($this->toList)+1;
+        if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $this->toList[$i]['name'] = $name;
+            $this->toList[$i]['email'] = $email;
+            return 1;
+        }
+        return 0;
+    }
+
+    function createMime($msgText, $msgHtml, $subject, $fromName, $fromEmail, $replyTo = ""){     
+        error_reporting(E_ERROR | E_PARSE | E_STRICT);
         if (empty($replyTo)) { $replyTo = $fromEmail; }
         // simple message
         // $header .= "Content-type: text/html; charset=".$this->mEncoding." \r\n";
@@ -32,9 +71,30 @@ class PhpMimeClient
         $boundary1 = md5($tm);
         $boundary2 = md5($tm-10);
 
+        // create To emails
+        $to = "";
+        foreach ($this->toList as $em) {
+            $to .= ltrim($em['name']." <".$em['email'].'>, ');            
+        }
+        // Cc:
+        $cc = "";
+        foreach ($this->ccList as $em) {
+            $cc .= ltrim($em['name']." <".$em['email'].'>, ');            
+        }
+        // Bcc:
+        $bcc = "";
+        foreach ($this->bccList as $em) {
+            $bcc .= ltrim($em['name']." <".$em['email'].'>, ');            
+        }
+
         // multipart message
         $header = "Date: ".date("r (T)")." \r\n";        
-        $header .= "From: ".$fromName." <".$fromEmail."> \r\n";        
+        $header .= "From: ".$fromName." <".$fromEmail."> \r\n";   
+        // To
+        if(!empty($to)){ $header .= "To: ".$to."\r\n"; }
+        if(!empty($cc)){ $header .= "Cc: ".$cc."\r\n"; }
+        if(!empty($bcc)){ $header .= "Bcc: ".$bcc."\r\n"; }
+        // Data 
         $header .= "Subject: =?".$this->mEncoding."?B?".base64_encode($subject)."?=\r\n";
         $header .= "Reply-To: <".$replyTo.">\r\n";
         $header .= "Return-Path: <".$fromEmail.">\r\n";         
@@ -84,6 +144,7 @@ class PhpMimeClient
         $header .= "\r\n.\r\n";
         // add mime
         $this->mime = $header;
+        error_reporting('E_ALL');
     }
 
     function getMime(){
@@ -92,19 +153,33 @@ class PhpMimeClient
 
 }
 
-// Create mime object
-$m = new PhpMimeClient();
 
-// Add files inline
-$m->addFile('photo.jpg',"zenek123");
+    $m = new PhpMimeClient();
 
-// Add file
-$m->addFile('sun.png');
+    // Add to
+    $m->addTo("Max","email@star.ccc");
+    $m->addTo("Adela","adela@music.com");
 
-// create mime
-$m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","Heniek Wielki", "heniek@breakermind.com","hello@gomail.coc");
+    // Add Cc
+    $m->addCc("Katex","zonk@email.au");
+    $m->addBcc("Ben","hello@email.be");
 
-// Show mime
-echo nl2br(htmlentities($m->getMime()));
+    // Add Bcc
+    $m->addCc("BOSS","boos@domain.com");    
+
+    // Add files inline
+    $m->addFile('photo.jpg',"zenek123");
+
+    // Add file
+    $m->addFile('sun.png');
+
+    // create mime
+    $m->createMime("Witaj księżniczko Alabambo",'<h1>Witaj księżniczko Alabambo <img src="cid:zenek123"> </h1>',"Wesołych świąt życzę!","Heniek Wielki", "heniek@domain.com");
+
+    // get mime
+    // $m->getMime();
+    
+    // Show mime
+    echo nl2br(htmlentities($m->getMime()));
 
 ?>
