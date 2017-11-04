@@ -6,7 +6,7 @@ Php mime message parser
 $str = file_get_contents('mime-mixed-related-alternative.eml');
 
 // Format output <br>
-echo "<pre>";
+echo "\<pre\>";
 
 // Create object MimeParser
 $m = new PhpMimeParser($str);
