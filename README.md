@@ -27,4 +27,14 @@ print_r($m->mInlineList);
 // Show Files
 print_r($m->mFiles);
 
+// Save attachments to folder
+foreach ($m->mFiles as $key => $file) {	
+	$dir = 'attachments';
+	if (!file_exists($dir)) {
+	  mkdir($dir);
+	}	
+	//  Save content to file
+	file_put_contents($dir.'/'.$file['name'], $file['content']);
+}
+
 ```
